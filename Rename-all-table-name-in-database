@@ -1,0 +1,21 @@
+<?php
+$connect = new PDO('mysql:host=localhost; dbname=afdb_annual_meeting_2k19', 'root', '');
+
+$query = "show tables";
+$result = $connect->prepare($query);
+$result->execute();
+$resultSet = $result->fetchAll(PDO:: FETCH_ASSOC);
+$query1 ="RENAME TABLE ";
+$tableName = [];
+foreach($resultSet as $key => $value) {
+	$tableName[] = $value['Tables_in_afdb_annual_meeting_2k19'] . ' to afdb_am_2k19_' . $value['Tables_in_afdb_annual_meeting_2k19']; 
+}
+$tableNames = implode(', ', $tableName);
+if(!empty($tableNames)) {
+	$query1 .= $tableNames;
+}
+
+$result1 = $connect->prepare($query1);
+$result1->execute();
+
+?>
